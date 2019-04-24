@@ -62,8 +62,7 @@ def startMarkov(event) :
       return
     rules = parseRules(text_algorithm.get(1.0,END).split("\n"))
     if (rules == False) :
-      return
-    
+      return 
     sinput = input_.get()
     i = 0
     while(True) :
@@ -98,6 +97,7 @@ def initSteps() :
 
 #void
 def uploadRules(rules) :
+    listbox.delete(0,END)
     for rule in rules :
       if (rule[2]) :
         arrow = "\u21A6"
@@ -108,7 +108,6 @@ def uploadRules(rules) :
 def endStep() :
     global save_rules
     save_rules = False
-    listbox.delete(0,END)
     button_start.config(state = NORMAL)
     textbox_input_word.config(state = NORMAL)
     text_algorithm.config(state = NORMAL)
@@ -118,19 +117,18 @@ def stepMarkov(event) :
       if (initSteps() == False) :
         return
     iter_res = doIteration(save_rules,result.get())
-    if (iter_res[1]) :
-      endStep()
-      return
+    result.set(iter_res[0])
     for i in range(0,listbox.size()) :
       listbox.itemconfig(i,bg = "white")
     listbox.itemconfig(iter_res[2],bg = "red")
-    result.set(iter_res[0])
-
-
+    if (iter_res[1]) :
+      endStep()
+      return
 
 def stopMarkov(*args) :
-    endStep()
-    result.set('')
+#    endStep()
+#    result.set('')
+    print(save_rules)
 
 def inputWord(act,inp) :
     if (act == '0'):
@@ -197,7 +195,7 @@ text_algorithm.grid(row = 5, column = 0, columnspan = 4, sticky = W, pady = CONS
 #text_algorithm.config(validate = "key", validatecommand=mainRules_reg)
 
 text_logs = Text(width = CONST_LOG_WIDTH, height = CONST_LOG_HEIGHT)
-#text_logs.config(state = DISABLED)
+text_logs.config(state = DISABLED)
 text_logs.grid(row = 7,column = 0, columnspan = 8, padx = CONST_PADX, pady = CONST_PADY)
 
 #------------------------LISTBOX------------------
