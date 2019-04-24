@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
 from tkinter import *
+import re
+
+CONST_ALPHABET = ['a','b','c','*']
 
 CONST_PROJECT_NAME_WIDTH = 50
 CONST_TEXT_WIDTH = 50
@@ -13,28 +16,139 @@ CONST_PADY = 10
 CONST_WORD_WIDTH = 15
 CONST_INPUT_WIDTH = 20
 
-def startMarkov(*args) :
-    print("startMarkov")
-
-def stepMarkov(*args) :
-    print("stepMarkov")
-
-def stopMarkov(*args) :
-    print("stopMarkov")
-
-def inputWord(*args) :
-    print("inputWord")
-
-def mainRules(*args) :
-    print("mainRules")
+CONST_ITERATION = 1000
 
 root = Tk()
+
+
+# return list | bool
+def parseRules(rules) :
+    i = 1
+    lst = []
+    template = '(['+''.join(CONST_ALPHABET)+']*)(\\|?)->'+'(['+''.join(CONST_ALPHABET)+']*)$'
+    for rule in rules :
+      if (rule.rstrip() == '') :
+        continue
+      res = re.match(template,rule.rstrip(),re.MULTILINE)
+      if (type(res) == type(None)):
+        text_logs.insert(1.0,rule + "\n")
+        text_logs.insert(1.0,"Ошибка в алгоритме, строчка номер: " + str(i) + "\n")
+        return False
+      i += 1
+      lst.append([res.group(1),res.group(3), not (res.group(2) == '')])
+    return lst
+
+# return lst
+def doIteration(rules,sinput) :
+    flag = True
+    i = 0
+    for rule in rules :
+      stmp = sinput.replace(rule[0],rule[1],1)
+      if (stmp != sinput) :
+        sinput = stmp
+        if (rule[2]) :
+          break
+        flag = False
+        break
+      i += 1
+    return [sinput,flag,i]
+
+def startMarkov(event) :
+    print(save_rules)
+    if (save_rules != False) :
+      return
+    if (input_.get() == '') : 
+      text_logs.insert(1.0,"Пустое входное слово\n")
+      return
+    rules = parseRules(text_algorithm.get(1.0,END).split("\n"))
+    if (rules == False) :
+      return
+    
+    sinput = input_.get()
+    i = 0
+    while(True) :
+      if (i >= CONST_ITERATION) :
+        text_logs.insert(1.0,"Алгорит зациклился\n")
+        return
+      iter_res = doIteration(rules,sinput)
+      sinput = iter_res[0]
+      if (iter_res[1]) :
+        break
+      i += 1
+    result.set(sinput)
+    text_logs.insert(1.0,"Алгоритм выполнен\n")
+
+
+save_rules = False
+#return bool 
+def initSteps() :
+    if (input_.get() == '') : 
+      text_logs.insert(1.0,"Пустое входное слово\n")
+      return False
+    global save_rules
+    save_rules = parseRules(text_algorithm.get(1.0,END).split("\n"))
+    if (save_rules == False) :
+      return False
+    uploadRules(save_rules)
+    button_start.config(state = DISABLED)
+    textbox_input_word.config(state = DISABLED)
+    text_algorithm.config(state = DISABLED)
+    result.set(input_.get())
+    return True
+
+#void
+def uploadRules(rules) :
+    for rule in rules :
+      if (rule[2]) :
+        arrow = "\u21A6"
+      else :
+        arrow = "\u2192"
+      listbox.insert(END,rule[0] + arrow + rule[1])
+
+def endStep() :
+    global save_rules
+    save_rules = False
+    listbox.delete(0,END)
+    button_start.config(state = NORMAL)
+    textbox_input_word.config(state = NORMAL)
+    text_algorithm.config(state = NORMAL)
+
+def stepMarkov(event) :
+    if (save_rules == False) :
+      if (initSteps() == False) :
+        return
+    iter_res = doIteration(save_rules,result.get())
+    if (iter_res[1]) :
+      endStep()
+      return
+    for i in range(0,listbox.size()) :
+      listbox.itemconfig(i,bg = "white")
+    listbox.itemconfig(iter_res[2],bg = "red")
+    result.set(iter_res[0])
+
+
+
+def stopMarkov(*args) :
+    endStep()
+    result.set('')
+
+def inputWord(act,inp) :
+    if (act == '0'):
+      return True
+    if (inp in CONST_ALPHABET):
+      return True
+    return False
+
+inputWord_reg = (root.register(inputWord),"%d","%S")
+
 root.title = "Марков"
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
 
 result = StringVar()
-result.set("abcd")
+
+input_ = StringVar()
+input_.set("aaaaa");
 
 #------------------------LABELS--------------------
 label_project_name = Label(root, text = "Нормальные алгоритмы Маркова", width = CONST_PROJECT_NAME_WIDTH)
@@ -62,9 +176,10 @@ label_exec.configure(fg = "midnight blue")
 label_exec.grid(row = 4, column = 4 , columnspan = 2 , sticky = S+W, padx = 20)
 
 #------------------------TEXT-----------------
-textbox_input_word = Entry(root, width = CONST_INPUT_WIDTH)
+textbox_input_word = Entry(root, width = CONST_INPUT_WIDTH, textvariable = input_)
 textbox_input_word.grid(row = 2, column = 0, columnspan = 2, padx = CONST_PADX, sticky = S)
-textbox_input_word.bind("<Key>", inputWord)
+#textbox_input_word.bind("<Key>", inputWord)
+textbox_input_word.config(validate = "key", validatecommand=inputWord_reg)
 
 textbox_output_word = Entry(root, width = CONST_INPUT_WIDTH, textvariable = result)
 textbox_output_word.config(state = DISABLED)
@@ -77,16 +192,18 @@ textbox_alphabet.grid(row = 3, column = 3, columnspan = 2, pady = CONST_PADY, st
 
 text_algorithm = Text(root, width = CONST_TEXT_WIDTH, height = CONST_TEXT_HEIGHT, wrap = WORD)
 text_algorithm.grid(row = 5, column = 0, columnspan = 4, sticky = W, pady = CONST_PADY, padx = CONST_PADX)
-text_algorithm.bind("<Key>", mainRules)
+#text_algorithm.bind("<KeyRelease>", inputRules_before)
+#text_algorithm.bind("<Key>",inputRules_after)
+#text_algorithm.config(validate = "key", validatecommand=mainRules_reg)
 
 text_logs = Text(width = CONST_LOG_WIDTH, height = CONST_LOG_HEIGHT)
-text_logs.config(state = DISABLED)
+#text_logs.config(state = DISABLED)
 text_logs.grid(row = 7,column = 0, columnspan = 8, padx = CONST_PADX, pady = CONST_PADY)
 
 #------------------------LISTBOX------------------
-listbox_algorithm = Listbox(root, width = CONST_TEXT_WIDTH-2, height = CONST_TEXT_HEIGHT-1)
-listbox_algorithm.config(state = DISABLED)
-listbox_algorithm.grid(row = 5, column = 4, columnspan = 4, sticky = E, padx = CONST_PADX)
+listbox = Listbox(root, width = CONST_TEXT_WIDTH-2, height = CONST_TEXT_HEIGHT-1)
+#listbox.config(state = DISABLED)
+listbox.grid(row = 5, column = 4, columnspan = 4, sticky = E, padx = CONST_PADX)
 
 #----------------------BUTTONS-----------------------
 button_start = Button(root, text = "Start", width = 15)
