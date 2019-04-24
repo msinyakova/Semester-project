@@ -54,7 +54,6 @@ def doIteration(rules,sinput) :
     return [sinput,flag,i]
 
 def startMarkov(event) :
-    print(save_rules)
     if (save_rules != False) :
       return
     if (input_.get() == '') : 
@@ -126,9 +125,8 @@ def stepMarkov(event) :
       return
 
 def stopMarkov(*args) :
-#    endStep()
-#    result.set('')
-    print(save_rules)
+    endStep()
+    result.set('')
 
 def inputWord(act,inp) :
     if (act == '0'):
@@ -176,7 +174,6 @@ label_exec.grid(row = 4, column = 4 , columnspan = 2 , sticky = S+W, padx = 20)
 #------------------------TEXT-----------------
 textbox_input_word = Entry(root, width = CONST_INPUT_WIDTH, textvariable = input_)
 textbox_input_word.grid(row = 2, column = 0, columnspan = 2, padx = CONST_PADX, sticky = S)
-#textbox_input_word.bind("<Key>", inputWord)
 textbox_input_word.config(validate = "key", validatecommand=inputWord_reg)
 
 textbox_output_word = Entry(root, width = CONST_INPUT_WIDTH, textvariable = result)
@@ -190,17 +187,12 @@ textbox_alphabet.grid(row = 3, column = 3, columnspan = 2, pady = CONST_PADY, st
 
 text_algorithm = Text(root, width = CONST_TEXT_WIDTH, height = CONST_TEXT_HEIGHT, wrap = WORD)
 text_algorithm.grid(row = 5, column = 0, columnspan = 4, sticky = W, pady = CONST_PADY, padx = CONST_PADX)
-#text_algorithm.bind("<KeyRelease>", inputRules_before)
-#text_algorithm.bind("<Key>",inputRules_after)
-#text_algorithm.config(validate = "key", validatecommand=mainRules_reg)
 
 text_logs = Text(width = CONST_LOG_WIDTH, height = CONST_LOG_HEIGHT)
-text_logs.config(state = DISABLED)
 text_logs.grid(row = 7,column = 0, columnspan = 8, padx = CONST_PADX, pady = CONST_PADY)
 
 #------------------------LISTBOX------------------
 listbox = Listbox(root, width = CONST_TEXT_WIDTH-2, height = CONST_TEXT_HEIGHT-1)
-#listbox.config(state = DISABLED)
 listbox.grid(row = 5, column = 4, columnspan = 4, sticky = E, padx = CONST_PADX)
 
 #----------------------BUTTONS-----------------------
