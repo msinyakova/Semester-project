@@ -76,7 +76,6 @@ def startMarkov(event) :
     result.set(sinput)
     text_logs.insert(1.0,"Алгоритм выполнен\n")
 
-
 save_rules = False
 #return bool 
 def initSteps() :
@@ -117,11 +116,13 @@ def stepMarkov(event) :
         return
     iter_res = doIteration(save_rules,result.get())
     result.set(iter_res[0])
-    for i in range(0,listbox.size()) :
-      listbox.itemconfig(i,bg = "white")
-    listbox.itemconfig(iter_res[2],bg = "red")
+    if (iter_res[2] < listbox.size()):
+      for i in range(0,listbox.size()) :
+        listbox.itemconfig(i,bg = "white")
+      listbox.itemconfig(iter_res[2],bg = "red")
     if (iter_res[1]) :
       endStep()
+      text_logs.insert(1.0,"Алгоритм выполнен\n")
       return
 
 def stopMarkov(*args) :
