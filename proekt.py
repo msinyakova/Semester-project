@@ -48,34 +48,38 @@ Errors = {
 #      lst.append([res.group(1),res.group(3), not (res.group(2) == '')])
 #    return lst
 
+
 def write_logs(string) :
     text_logs.config(state = NORMAL) 
     text_logs.delete(1.0, END) 
     text_logs.insert(1.0, string)
     text_logs.config(state = DISABLED)
-
-def checkRules(rule, raw) :
-    res = re.match('(.*)(\\|?)->'+'(.*)',rule)
+    
+def checkRules(rule,raw) :
+    flag = True
+    res = re.match('(.*)\\|->'+'(.*)$',rule,re.MULTILINE)
+    if (type(res) == type(None)) :
+      flag = False
+      res = re.match('(.*)->'+'(.*)$',rule,re.MULTILINE)
     if (type(res) == type(None)) :
         write_logs(Errors["str_number_err"] % raw + Errors["arrow_not_found"] + rule + "\n")
         return False
     i = 0
     for k in res.group(1) :
-        if (k not in CONST_ALPHABET) :
-            write_logs(Errors["str_number_err"] % raw + Errors["not_in_alphabet"] % (k, i + 1))
-            return False
-        i += 1
-    if (res.group(2) == '') :
-        i += 2
+      if (k not in CONST_ALPHABET) :
+        write_logs(Errors["str_number_err"] % raw + Errors["not_in_alphabet"] % (k, i + 1))
+        return False
+      i += 1
+    if (flag) :
+      i += 2
     else :
-        i += 3
-    for k in res.group(3) :
-        if (k not in CONST_ALPHABET) :
-            write_logs(Errors["str_number_err"] % raw + Errors["not_in_alphabet"] % (k, i + 1))
-            return False
-        i += 1
-    return [res.group(1),res.group(3), not (res.group(2) == '')]
-
+      i += 3
+    for k in res.group(2) :
+      if (k not in CONST_ALPHABET) :
+        write_logs(Errors["str_number_err"] % raw + Errors["not_in_alphabet"] % (k, i + 1))
+        return False
+      i += 1
+    return [res.group(1),res.group(2), flag]
 
 def parseRules(rules) :
     i = 1
@@ -98,12 +102,13 @@ def doIteration(rules, sinput) :
     flag = True
     i = 0
     for rule in rules :
+      if (sinput.find(rule[0]) != -1) :
+        flag = False
       stmp = sinput.replace(rule[0],rule[1],1)
-      if (stmp != sinput) :
+      if (not flag) :
         sinput = stmp
         if (rule[2]) :
           break
-        flag = False
         break
       i += 1
     return [sinput,flag,i]
@@ -124,6 +129,7 @@ def startMarkov(event) :
     while(True) :
       if (i >= CONST_ITERATION) :
         write_logs(Errors["cycle"])
+        result.set('')
         return
       iter_res = doIteration(rules,sinput)
       sinput = iter_res[0]
