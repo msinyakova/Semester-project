@@ -49,7 +49,12 @@ Errors = {
 #    return lst
 
 def checkRules(rule,raw) :
-    res = re.match('(.*)(\\|?)->'+'(.*)',rule)
+    flag = True
+    res = re.match('(.*)\\|->'+'(.*)$',rule,re.MULTILINE)
+    if (type(res) == type(None)) :
+      flag = False
+      res = re.match('(.*)->'+'(.*)$',rule,re.MULTILINE)
+
     if (type(res) == type(None)) :
       text_logs.insert(1.0, Errors["str_number_err"] % raw + Errors["arrow_not_found"] + rule + "\n")
       return False
@@ -59,16 +64,16 @@ def checkRules(rule,raw) :
         text_logs.insert(1.0, Errors["str_number_err"] % raw + Errors["not_in_alphabet"] % (k, i))
         return False
       i += 1
-    if (res.group(2) == '') :
+    if (flag) :
       i += 2
     else :
       i += 3
-    for k in res.group(3) :
+    for k in res.group(2) :
       if (k not in CONST_ALPHABET) :
         text_logs.insert(1.0, Errors["str_number_err"] % raw + Errors["not_in_alphabet"] % (k, i))
         return False
       i += 1
-    return [res.group(1),res.group(3), not (res.group(2) == '')]
+    return [res.group(1),res.group(2), flag]
 
 
 def parseRules(rules) :
@@ -92,12 +97,13 @@ def doIteration(rules,sinput) :
     flag = True
     i = 0
     for rule in rules :
+      if (sinput.find(rule[0]) != -1) :
+        flag = False
       stmp = sinput.replace(rule[0],rule[1],1)
-      if (stmp != sinput) :
+      if (not flag) :
         sinput = stmp
         if (rule[2]) :
           break
-        flag = False
         break
       i += 1
     return [sinput,flag,i]
@@ -117,6 +123,7 @@ def startMarkov(event) :
     i = 0
     while(True) :
       if (i >= CONST_ITERATION) :
+        result.set('')
         text_logs.insert(1.0, Errors["cycle"])
         return
       iter_res = doIteration(rules,sinput)
