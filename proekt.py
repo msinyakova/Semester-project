@@ -20,11 +20,16 @@ CONST_INPUT_WIDTH = 20
 CONST_ITERATION = 1000
 
 root = Tk()
+save_rules = False
 
 Errors = {
     "empty" : "Пустое входное слово\n",
     "done" : "Алгоритм выполнен\n",
-    "cycle" : "Алгорит зациклился\n"}
+    "cycle" : "Алгорит зациклился\n",
+    "arrow_not_found" : "Не найдена стрелка в правиле:\n",
+    "str_number_err" : "Ошибка в записи правила номер: %i \n",
+    "not_in_alphabet" : "Символ не из алфавита: %s (позиция в строке: %i)\n",
+    }
 
 # return list | bool
 #def parseRules(rules) :
@@ -46,16 +51,12 @@ Errors = {
 def checkRules(rule,raw) :
     res = re.match('(.*)(\\|?)->'+'(.*)',rule)
     if (type(res) == type(None)) :
-      text_logs.insert(1.0,rule + "\n")
-      text_logs.insert(1.0,"Не найдена стрелка в правиле:\n")
-      text_logs.insert(1.0,"Ошибка в алгоритме, строчка номер: " + str(raw) + "\n")
+      text_logs.insert(1.0, Errors["str_number_err"] % raw + Errors["arrow_not_found"] + rule + "\n")
       return False
     i = 0
     for k in res.group(1) :
       if (k not in CONST_ALPHABET) :
-        text_logs.insert(1.0,rule + "\n")
-        text_logs.insert(1.0,"Символ не из алфавита: " + str(k) + " (позиция в строке: " + str(i) + ")\n")
-        text_logs.insert(1.0,"Ошибка в алгоритме, строчка номер: " + str(raw) + "\n")
+        text_logs.insert(1.0, Errors["str_number_err"] % raw + Errors["not_in_alphabet"] % (k, i))
         return False
       i += 1
     if (res.group(2) == '') :
@@ -64,12 +65,11 @@ def checkRules(rule,raw) :
       i += 3
     for k in res.group(3) :
       if (k not in CONST_ALPHABET) :
-        text_logs.insert(1.0,rule + "\n")
-        text_logs.insert(1.0,"Символ не из алфавита: " + str(k) + " (позиция в строке: " + str(i) + ")\n")
-        text_logs.insert(1.0,"Ошибка в алгоритме, строчка номер: " + str(raw) + "\n")
+        text_logs.insert(1.0, Errors["str_number_err"] % raw + Errors["not_in_alphabet"] % (k, i))
         return False
       i += 1
     return [res.group(1),res.group(3), not (res.group(2) == '')]
+
 
 def parseRules(rules) :
     i = 1
@@ -86,6 +86,7 @@ def parseRules(rules) :
       i += 1
     return lst
 
+
 # return lst
 def doIteration(rules,sinput) :
     flag = True
@@ -100,6 +101,7 @@ def doIteration(rules,sinput) :
         break
       i += 1
     return [sinput,flag,i]
+
 
 def startMarkov(event) :
     if (save_rules != False) :
@@ -125,7 +127,7 @@ def startMarkov(event) :
     result.set(sinput)
     text_logs.insert(1.0, Errors["done"])
 
-save_rules = False
+
 #return bool 
 def initSteps() :
     if (input_.get() == '') : 
@@ -142,6 +144,7 @@ def initSteps() :
     result.set(input_.get())
     return True
 
+
 #void
 def uploadRules(rules) :
     listbox.delete(0,END)
@@ -150,8 +153,9 @@ def uploadRules(rules) :
         arrow = "  \u21A6  "
       else :
         arrow = "  \u2192  "
-      rule_number = '   (' + str(index) + ')   '
+      rule_number = '   (' + str(index + 1) + ')   '
       listbox.insert(END,rule_number + rules[index][0] + arrow + rules[index][1])
+
 
 def endStep() :
     global save_rules
@@ -159,6 +163,7 @@ def endStep() :
     button_start.config(state = NORMAL)
     textbox_input_word.config(state = NORMAL)
     text_algorithm.config(state = NORMAL)
+
 
 def stepMarkov(event) :
     if (save_rules == False) :
@@ -175,9 +180,11 @@ def stepMarkov(event) :
       text_logs.insert(1.0, Errors["done"])
       return
 
+
 def stopMarkov(*args) :
     endStep()
     result.set('')
+
 
 def inputWord(act,inp) :
     if (act == '0'):
