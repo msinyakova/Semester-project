@@ -27,20 +27,63 @@ Errors = {
     "cycle" : "Алгорит зациклился\n"}
 
 # return list | bool
+#def parseRules(rules) :
+#    i = 1
+#    lst = []
+#    template = '(['+''.join(CONST_ALPHABET)+']*)(\\|?)->'+'(['+''.join(CONST_ALPHABET)+']*)$'
+#    for rule in rules :
+#      if (rule.rstrip() == '') :
+#        continue
+#      res = re.match(template,rule.rstrip(),re.MULTILINE)
+#      if (type(res) == type(None)):
+#        text_logs.insert(1.0,rule + "\n")
+#        text_logs.insert(1.0,"Ошибка в алгоритме, строчка номер: " + str(i) + "\n")
+#        return False
+#      i += 1
+#      lst.append([res.group(1),res.group(3), not (res.group(2) == '')])
+#    return lst
+
+def checkRules(rule,raw) :
+    res = re.match('(.*)(\\|?)->'+'(.*)',rule)
+    if (type(res) == type(None)) :
+      text_logs.insert(1.0,rule + "\n")
+      text_logs.insert(1.0,"Не найдена стрелка в правиле:\n")
+      text_logs.insert(1.0,"Ошибка в алгоритме, строчка номер: " + str(raw) + "\n")
+      return False
+    i = 0
+    for k in res.group(1) :
+      if (k not in CONST_ALPHABET) :
+        text_logs.insert(1.0,rule + "\n")
+        text_logs.insert(1.0,"Символ не из алфавита: " + str(k) + " (позиция в строке: " + str(i) + ")\n")
+        text_logs.insert(1.0,"Ошибка в алгоритме, строчка номер: " + str(raw) + "\n")
+        return False
+      i += 1
+    if (res.group(2) == '') :
+      i += 2
+    else :
+      i += 3
+    for k in res.group(3) :
+      if (k not in CONST_ALPHABET) :
+        text_logs.insert(1.0,rule + "\n")
+        text_logs.insert(1.0,"Символ не из алфавита: " + str(k) + " (позиция в строке: " + str(i) + ")\n")
+        text_logs.insert(1.0,"Ошибка в алгоритме, строчка номер: " + str(raw) + "\n")
+        return False
+      i += 1
+    return [res.group(1),res.group(3), not (res.group(2) == '')]
+
 def parseRules(rules) :
     i = 1
     lst = []
-    template = '(['+''.join(CONST_ALPHABET)+']*)(\\|?)->'+'(['+''.join(CONST_ALPHABET)+']*)$'
     for rule in rules :
-      if (rule.rstrip() == '') :
-        continue
-      res = re.match(template,rule.rstrip(),re.MULTILINE)
-      if (type(res) == type(None)):
-        text_logs.insert(1.0,rule + "\n")
-        text_logs.insert(1.0,"Ошибка в алгоритме, строчка номер: " + str(i) + "\n")
+      rule = rule.rstrip()
+      if (rule == '') :
+        continue;
+      parsed_rule = checkRules(rule,i)
+      if (parsed_rule == False) :
         return False
+      else :
+        lst.append(parsed_rule)
       i += 1
-      lst.append([res.group(1),res.group(3), not (res.group(2) == '')])
     return lst
 
 # return lst
