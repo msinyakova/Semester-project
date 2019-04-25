@@ -13,6 +13,7 @@ CONST_LOG_WIDTH = 100
 
 CONST_PADX = 10
 CONST_PADY = 10
+CONST_PADY_FIRST = 50
 CONST_WORD_WIDTH = 15
 CONST_INPUT_WIDTH = 20
 
@@ -20,6 +21,10 @@ CONST_ITERATION = 1000
 
 root = Tk()
 
+Errors = {
+    "empty" : "Пустое входное слово\n",
+    "done" : "Алгоритм выполнен\n",
+    "cycle" : "Алгорит зациклился\n"}
 
 # return list | bool
 def parseRules(rules) :
@@ -57,16 +62,17 @@ def startMarkov(event) :
     if (save_rules != False) :
       return
     if (input_.get() == '') : 
-      text_logs.insert(1.0,"Пустое входное слово\n")
+      text_logs.insert(1.0, Errors["empty"])
       return
     rules = parseRules(text_algorithm.get(1.0,END).split("\n"))
     if (rules == False) :
-      return 
+      return
+    uploadRules(rules) 
     sinput = input_.get()
     i = 0
     while(True) :
       if (i >= CONST_ITERATION) :
-        text_logs.insert(1.0,"Алгорит зациклился\n")
+        text_logs.insert(1.0, Errors["cycle"])
         return
       iter_res = doIteration(rules,sinput)
       sinput = iter_res[0]
@@ -74,13 +80,13 @@ def startMarkov(event) :
         break
       i += 1
     result.set(sinput)
-    text_logs.insert(1.0,"Алгоритм выполнен\n")
+    text_logs.insert(1.0, Errors["done"])
 
 save_rules = False
 #return bool 
 def initSteps() :
     if (input_.get() == '') : 
-      text_logs.insert(1.0,"Пустое входное слово\n")
+      text_logs.insert(1.0, Errors["empty"])
       return False
     global save_rules
     save_rules = parseRules(text_algorithm.get(1.0,END).split("\n"))
@@ -96,12 +102,13 @@ def initSteps() :
 #void
 def uploadRules(rules) :
     listbox.delete(0,END)
-    for rule in rules :
-      if (rule[2]) :
-        arrow = "\u21A6"
+    for index in range(len(rules)) :
+      if (rules[index][2]) :
+        arrow = "  \u21A6  "
       else :
-        arrow = "\u2192"
-      listbox.insert(END,rule[0] + arrow + rule[1])
+        arrow = "  \u2192  "
+      rule_number = '   (' + str(index) + ')   '
+      listbox.insert(END,rule_number + rules[index][0] + arrow + rules[index][1])
 
 def endStep() :
     global save_rules
@@ -118,11 +125,11 @@ def stepMarkov(event) :
     result.set(iter_res[0])
     if (iter_res[2] < listbox.size()):
       for i in range(0,listbox.size()) :
-        listbox.itemconfig(i,bg = "white")
-      listbox.itemconfig(iter_res[2],bg = "red")
+        listbox.itemconfig(i,bg = "white", fg = "dark slate gray")
+      listbox.itemconfig(iter_res[2],bg = "SlateBlue4", fg = "snow")
     if (iter_res[1]) :
       endStep()
-      text_logs.insert(1.0,"Алгоритм выполнен\n")
+      text_logs.insert(1.0, Errors["done"])
       return
 
 def stopMarkov(*args) :
@@ -138,7 +145,7 @@ def inputWord(act,inp) :
 
 inputWord_reg = (root.register(inputWord),"%d","%S")
 
-root.title = "Марков"
+root.title = "Markov"
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
 
@@ -150,19 +157,27 @@ input_.set("aaaaa");
 #------------------------LABELS--------------------
 label_project_name = Label(root, text = "Нормальные алгоритмы Маркова", width = CONST_PROJECT_NAME_WIDTH)
 label_project_name.configure(fg = "deep pink")
-label_project_name.grid(row = 0, column = 2, columnspan = 4, pady = CONST_PADY)
+label_project_name.grid(row = 0, column = 2, columnspan = 4, pady = CONST_PADY_FIRST)
 
 label_input_word = Label(root, text = "Входное слово:", width = CONST_WORD_WIDTH)
 label_input_word.configure(fg = "midnight blue")
-label_input_word.grid(row = 1, column = 0, columnspan = 2 , sticky = N)
+label_input_word.grid(row = 1, column = 0, columnspan = 2 , sticky = N + S)
 
 label_output_word = Label(root, text = "Выходное слово:", width = CONST_WORD_WIDTH)
 label_output_word.configure(fg = "midnight blue")
-label_output_word.grid(row = 1, column = 6 , columnspan = 2 , sticky = N)
+label_output_word.grid(row = 1, column = 6 , columnspan = 2 , sticky = N + S)
+
+label_simbols = Label(root, text = "Обозначения стрелок:")
+label_simbols.configure(fg = "midnight blue")
+label_simbols.grid(row = 1, column = 2, columnspan = 4, sticky = S)
+
+label_arrow = Label(root, text = " \u21A6 : |->   \u2192 : -> ")
+label_arrow.configure(fg = "midnight blue")
+label_arrow.grid(row = 2, column = 2, columnspan = 4, sticky = N)
 
 label_alphabet = Label(root, text = "Алфавит:",width = 10)
 label_alphabet.configure(fg = "midnight blue")
-label_alphabet.grid(row = 3, column = 2, columnspan = 1, pady = CONST_PADY, sticky = E)
+label_alphabet.grid(row = 3, column = 2, columnspan = 1, pady = CONST_PADY_FIRST, sticky = E)
 
 label_rule = Label(root, text = "Правила:", width = CONST_WORD_WIDTH)
 label_rule.configure(fg = "midnight blue")
@@ -188,6 +203,9 @@ textbox_alphabet.grid(row = 3, column = 3, columnspan = 2, pady = CONST_PADY, st
 
 text_algorithm = Text(root, width = CONST_TEXT_WIDTH, height = CONST_TEXT_HEIGHT, wrap = WORD)
 text_algorithm.grid(row = 5, column = 0, columnspan = 4, sticky = W, pady = CONST_PADY, padx = CONST_PADX)
+file = open("test.txt", "r")
+algorithm_rules = file.read()
+text_algorithm.insert(0.0, algorithm_rules)
 
 text_logs = Text(width = CONST_LOG_WIDTH, height = CONST_LOG_HEIGHT)
 text_logs.grid(row = 7,column = 0, columnspan = 8, padx = CONST_PADX, pady = CONST_PADY)
