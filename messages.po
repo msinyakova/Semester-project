@@ -1,0 +1,88 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-30 01:04+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en_EN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: proekt.py:28
+msgid "Epmty input word, input word in area: \"Input word\"\n"
+msgstr "Epmty input word, input word in area: \"Input word\"\n"
+
+#: proekt.py:29
+msgid "Algorithm was done successfully\n"
+msgstr "Algorithm was done successfully\n"
+
+#: proekt.py:30
+msgid "Algorithm was cycled, check errors in your algorithm\n"
+msgstr "Algorithm was cycled, check errors in your algorithm\n"
+
+#: proekt.py:31
+msgid "Missing arrow in rule:\n"
+msgstr "Missing arrow in rule:\n" 
+
+#: proekt.py:32
+#, python-format
+msgid "Error in rule number - %i \n"
+msgstr "Error in rule number - %i \n"
+
+#: proekt.py:33
+#, python-brace-format
+msgid "Sumbol \"{0}\" not from alphabet. Error in index - {1}\n"
+msgstr "Sumbol \"{0}\" not from alphabet. Error in index - {1}\n"
+
+#: proekt.py:195
+msgid "Normal markov algorithm"
+msgstr "Normal markov algorithm"
+
+#: proekt.py:200
+msgid "Input word:"
+msgstr "Input word:"
+
+#: proekt.py:204
+msgid "Output word:"
+msgstr "Output word:"
+
+#: proekt.py:208
+msgid "Arows symbols:"
+msgstr "Arows symbols:"
+
+#: proekt.py:217
+msgid "Alphabet:"
+msgstr "Alphabet:"
+
+#: proekt.py:221
+msgid "Rules:"
+msgstr "Rules:"
+
+#: proekt.py:225
+msgid "Steps:"
+msgstr "Steps:" 
+
+#: proekt.py:258
+msgid "Start"
+msgstr "Start"
+
+#: proekt.py:263
+msgid "Stop"
+msgstr "Stop"
+
+#: proekt.py:268
+msgid "Step"
+msgstr "Step"
+
+#: proekt.py:273
+msgid "Exit"
+msgstr "Exit"

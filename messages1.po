@@ -1,0 +1,88 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-30 01:04+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: proekt.py:28
+msgid "Epmty input word, input word in area: \"Input word\"\n"
+msgstr "Пустое входное слово, введите слово в поле: \"Входное слово\"\n"
+
+#: proekt.py:29
+msgid "Algorithm was done successfully\n"
+msgstr "Алгоритм завершился успешно\n"
+
+#: proekt.py:30
+msgid "Algorithm was cycled, check errors in your algorithm\n"
+msgstr "Алгоритм зациклился, проверьте корректность своего алгоритма\n"
+
+#: proekt.py:31
+msgid "Missing arrow in rule:\n"
+msgstr "Не найдена стрелка в правиле:\n"
+
+#: proekt.py:32
+#, python-format
+msgid "Error in rule number - %i \n"
+msgstr "Ошибка в записи правила номер - %i \n"
+
+#: proekt.py:33
+#, python-brace-format
+msgid "Sumbol \"{0}\" not from alphabet. Error in index - {1}\n"
+msgstr "Символ \"{0}\" не из алфавита. Ошибка в позиции - {1}\n"
+
+#: proekt.py:195
+msgid "Normal markov algorithm"
+msgstr "Нормальные алгоритмы Маркова"
+
+#: proekt.py:200
+msgid "Input word:"
+msgstr "Входное слово"
+
+#: proekt.py:204
+msgid "Output word:"
+msgstr "Выходное слово"
+
+#: proekt.py:208
+msgid "Arows symbols:"
+msgstr "Обозначения стрелок"
+
+#: proekt.py:217
+msgid "Alphabet:"
+msgstr "Алфавит"
+
+#: proekt.py:221
+msgid "Rules:"
+msgstr "Правила"
+
+#: proekt.py:225
+msgid "Steps:"
+msgstr "Ход выполнения"
+
+#: proekt.py:258
+msgid "Start"
+msgstr "Старт"
+
+#: proekt.py:263
+msgid "Stop"
+msgstr "Стоп"
+
+#: proekt.py:268
+msgid "Step"
+msgstr "Шаг"
+
+#: proekt.py:273
+msgid "Exit"
+msgstr "Выход"
