@@ -8,7 +8,7 @@ from modules import IterationModule as IM
 import os
 import gettext     
 root= os.getcwd()
-t = gettext.translation('translate', root, languages=['en'])
+t = gettext.translation('translate', root, languages=['ru'])
 _= t.gettext
 t.install()
 
@@ -38,7 +38,8 @@ Errors = {
     "cycle": _("Algorithm was cycled, check errors in your algorithm\n"),
     "arrow_not_found": _("Missing arrow in rule:\n"),
     "str_number_err": _("Error in rule number - %i \n"),
-    "not_in_alphabet": _("Sumbol \"{0}\" not from alphabet. Error in index - {1}\n")}
+    "not_in_alphabet": _("Sumbol \"{0}\" not from alphabet. Error in index - {1}\n"),
+    "uncorrect_input": _("You try to put symbol \"%s\", which is not included in the alphabet\n")}
 
 
 def write_logs(string):
@@ -184,7 +185,11 @@ def inputWord(act, inp):
     if (act == '0'):
         return True
     if (inp in CONST_ALPHABET):
+        text_logs.config(state=tk.NORMAL)
+        text_logs.delete(1.0, tk.END)
+        text_logs.config(state=tk.DISABLED)
         return True
+    write_logs(Errors["uncorrect_input"] % inp)
     return False
 
 
@@ -221,7 +226,7 @@ label_simbols = tk.Label(root, text=_("Arows symbols:"))
 label_simbols.configure(fg="midnight blue")
 label_simbols.grid(row=1, column=2, columnspan=4, sticky=tk.S)
 
-info_str = " \u21A6 means \"|->\"   \u2192  means \"->\" "
+info_str = _(" \u21A6 :: \"|->\"   \u2192  :: \"->\" ")
 label_arrow = tk.Label(root, text=info_str)
 label_arrow.configure(fg="midnight blue")
 label_arrow.grid(row=2, column=2, columnspan=4, sticky=tk.N)
@@ -237,6 +242,10 @@ label_rule.grid(row=4, column=0, columnspan=2, sticky=tk.S + tk.W)
 label_exec = tk.Label(root, text=_("Steps:"), width=WORD_WIDTH)
 label_exec.configure(fg="midnight blue")
 label_exec.grid(row=4, column=4, columnspan=2, sticky=tk.S + tk.W, padx=20)
+
+label_logs = tk.Label(root, text=_("Algorithm's diagnostic:"))
+label_logs.configure(fg="midnight blue")
+label_logs.grid(row=7, column=0, columnspan=8, sticky=tk.W + tk.E + tk.S, pady=PADY)
 
 # ------------------------TEXT-----------------
 textbox_input_word = tk.Entry(root, width=INPUT_WIDTH, textvariable=input_)
@@ -266,11 +275,11 @@ text_logs.config(state=tk.DISABLED)
 listbox = tk.Listbox(root, width=TEXT_WIDTH-2, height=TEXT_HEIGHT-1)
 listbox.grid(row=5, column=4, columnspan=4, sticky=tk.E, padx=PADX)
 
-listbox_lng = tk.Listbox(root)
+listbox_lng = tk.Listbox(root, height=2)
 listbox_lng.grid(row=3, column=6, columnspan=2)
 listbox_lng.insert(tk.END, "English")
 listbox_lng.insert(tk.END, "Russian")
-listbox_lng.bind("<<LisboxSelect>>", select)
+listbox_lng.bind("<<ListboxSelect>>", select)
 
 # ----------------------BUTTONS-----------------------
 button_start = tk.Button(root, text=_("Start"), width=15)

@@ -17,72 +17,81 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: proekt.py:28
+#: proekt.py:36
 msgid "Epmty input word, input word in area: \"Input word\"\n"
 msgstr "Epmty input word, input word in area: \"Input word\"\n"
 
-#: proekt.py:29
+#: proekt.py:37
 msgid "Algorithm was done successfully\n"
 msgstr "Algorithm was done successfully\n"
 
-#: proekt.py:30
+#: proekt.py:38
 msgid "Algorithm was cycled, check errors in your algorithm\n"
 msgstr "Algorithm was cycled, check errors in your algorithm\n"
 
-#: proekt.py:31
+#: proekt.py:39
 msgid "Missing arrow in rule:\n"
 msgstr "Missing arrow in rule:\n" 
 
-#: proekt.py:32
+#: proekt.py:40
 #, python-format
 msgid "Error in rule number - %i \n"
 msgstr "Error in rule number - %i \n"
 
-#: proekt.py:33
+#: proekt.py:41
 #, python-brace-format
 msgid "Sumbol \"{0}\" not from alphabet. Error in index - {1}\n"
 msgstr "Sumbol \"{0}\" not from alphabet. Error in index - {1}\n"
 
-#: proekt.py:195
+#: proekt.py:42
+#, python-brace-format
+msgid "You try to put symbol \"%s\", which is not included in the alphabet\n"
+msgstr "You try to put symbol \"%s\", which is not included in the alphabet\n"
+
+#: proekt.py:212
 msgid "Normal markov algorithm"
 msgstr "Normal markov algorithm"
 
-#: proekt.py:200
+#: proekt.py:217
 msgid "Input word:"
 msgstr "Input word:"
 
-#: proekt.py:204
+#: proekt.py:221
 msgid "Output word:"
 msgstr "Output word:"
 
-#: proekt.py:208
+#: proekt.py:225
 msgid "Arows symbols:"
 msgstr "Arows symbols:"
 
-#: proekt.py:217
+#: proekt.py:234
 msgid "Alphabet:"
 msgstr "Alphabet:"
 
-#: proekt.py:221
+#: proekt.py:238
 msgid "Rules:"
 msgstr "Rules:"
 
-#: proekt.py:225
+#: proekt.py:242
 msgid "Steps:"
-msgstr "Steps:" 
+msgstr "Steps:"
 
-#: proekt.py:258
+#: proekt.py:246
+msgid "Algorithm's diagnostic:"
+msgstr "Algorithm's diagnostic:"  
+
+#: proekt.py:285
 msgid "Start"
 msgstr "Start"
 
-#: proekt.py:263
+#: proekt.py:290
 msgid "Stop"
 msgstr "Stop"
 
-#: proekt.py:268
+#: proekt.py:295
 msgid "Step"
 msgstr "Step"
 
-#: proekt.py:273
+#: proekt.py:300
 msgid "Exit"
 msgstr "Exit"
