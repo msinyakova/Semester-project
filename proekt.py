@@ -2,6 +2,8 @@
 
 import tkinter as tk
 import re
+from modules import ParsingModule as PM
+from modules import IterationModule as IM
 
 CONST_ALPHABET = ['a', 'b', 'c', '*']
 
@@ -38,39 +40,25 @@ def write_logs(string):
     text_logs.insert(1.0, string)
     text_logs.config(state=tk.DISABLED)
 
-
+# str rule
+# int raw
+# return lst|bool
 def checkRules(rule, raw):
-    flag = True
-    res = re.match('(.*)\\|->'+'(.*)$', rule, re.MULTILINE)
-    if (isinstance(res, type(None))):
-        flag = False
-        res = re.match('(.*)->'+'(.*)$', rule, re.MULTILINE)
-    if (isinstance(res, type(None))):
+    rule_lst = PM.ruleStrToList(rule)
+    if not rule_lst:
         help_str = Errors["arrow_not_found"] + rule + "\n"
         write_logs(Errors["str_number_err"] % raw + help_str)
         return False
-    i = 0
-    for k in res.group(1):
-        if (k not in CONST_ALPHABET):
-            help_str = Errors["not_in_alphabet"] % (k, i)
-            write_logs(Errors["str_number_err"] % raw + help_str)
-            text_algorithm.tag_add("Error", str(raw) + "." + str(i))
-            text_algorithm.tag_config("Error", foreground="red")
-            return False
-        i += 1
-    if (flag):
-        i += 3
-    else:
-        i += 2
-    for k in res.group(2):
-        if (k not in CONST_ALPHABET):
-            help_str = Errors["not_in_alphabet"] % (k, i)
-            write_logs(Errors["str_number_err"] % raw + help_str)
-            text_algorithm.tag_add("Error", str(raw) + "." + str(i))
-            text_algorithm.tag_config("Error", foreground="red")
-            return False
-        i += 1
-    return [res.group(1), res.group(2), flag]
+    rule_val = PM.validateRuleList(rule_lst)
+    if not rule_val:
+        return rule_lst
+    i = rule_val[0]
+    k = rule_val[1]
+    help_str = Errors["not_in_alphabet"] % (k, i)
+    write_logs(Errors["str_number_err"] % raw + help_str)
+    text_algorithm.tag_add("Error", str(raw) + "." + str(i))
+    text_algorithm.tag_config("Error", foreground="red")
+    return False
 
 
 def parseRules(rules):
@@ -87,25 +75,6 @@ def parseRules(rules):
             lst.append(parsed_rule)
         i += 1
     return lst
-
-
-# return lst
-def doIteration(rules, sinput):
-    flag = True
-    i = 0
-    for rule in rules:
-        if (sinput.find(rule[0]) != -1):
-            flag = False
-        stmp = sinput.replace(rule[0], rule[1], 1)
-        if (not flag):
-            sinput = stmp
-            if (rule[2]):
-                flag = True
-                break
-            break
-    i += 1
-    return [sinput, flag, i]
-
 
 def uploadRawRules(rules):
     listbox.delete(0, tk.END)
@@ -136,7 +105,7 @@ def startMarkov(event):
             write_logs(Errors["cycle"])
             result.set('')
             return
-        iter_res = doIteration(rules, sinput)
+        iter_res = IM.doIteration(rules, sinput)
         sinput = iter_res[0]
         if (iter_res[1]):
             break
@@ -187,7 +156,7 @@ def stepMarkov(event):
     if not save_rules:
         if not initSteps():
             return
-    iter_res = doIteration(save_rules, result.get())
+    iter_res = IM.doIteration(save_rules, result.get())
     result.set(iter_res[0])
     if (iter_res[2] < listbox.size()):
         for i in range(0, listbox.size()):
