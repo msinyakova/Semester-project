@@ -1,9 +1,17 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python7
 
 import tkinter as tk
 import re
 from modules import ParsingModule as PM
 from modules import IterationModule as IM
+
+import os
+import gettext     
+root= os.getcwd()
+t = gettext.translation('translate', root, languages=['en'])
+_= t.gettext
+t.install()
+
 
 CONST_ALPHABET = ['a', 'b', 'c', '*']
 
@@ -25,13 +33,12 @@ root = tk.Tk()
 save_rules = False
 
 Errors = {
-    "empty": "Пустое входное слово, введите слово в поле \"Входное слово\"\n",
-    "done": "Алгоритм завершился успешно\n",
-    "cycle": "Алгорит зациклился, проверьте корректность своего алгоритма\n",
-    "arrow_not_found": "Не найдена стрелка в правиле:\n",
-    "str_number_err": "Ошибка в записи правила номер - %i \n",
-    "not_in_alphabet": "Символ \"%s\" не из алфавита. Ошибка в позиции - %i\n",
-    "uncorrect_input": "Вы пытаетесь ввести символ \"%s\", который не входит в алфавит\n"}
+    "empty": _("Epmty input word, input word in area: \"Input word\"\n"),
+    "done": _("Algorithm was done successfully\n"),
+    "cycle": _("Algorithm was cycled, check errors in your algorithm\n"),
+    "arrow_not_found": _("Missing arrow in rule:\n"),
+    "str_number_err": _("Error in rule number - %i \n"),
+    "not_in_alphabet": _("Sumbol \"{0}\" not from alphabet. Error in index - {1}\n")}
 
 
 def write_logs(string):
@@ -54,7 +61,7 @@ def checkRules(rule, raw):
         return rule_lst
     i = rule_val[0]
     k = rule_val[1]
-    help_str = Errors["not_in_alphabet"] % (k, i)
+    help_str = Errors["not_in_alphabet"].format(k, i)
     write_logs(Errors["str_number_err"] % raw + help_str)
     text_algorithm.tag_add("Error", str(raw) + "." + str(i))
     text_algorithm.tag_config("Error", foreground="red")
@@ -177,13 +184,13 @@ def inputWord(act, inp):
     if (act == '0'):
         return True
     if (inp in CONST_ALPHABET):
-        text_logs.config(state=tk.NORMAL)
-        text_logs.delete(1.0, tk.END)
-        text_logs.config(state=tk.DISABLED)
         return True
-    write_logs(Errors["uncorrect_input"] % inp)
     return False
 
+
+def select(event):
+    print(222)
+    print(listbox_lng.curselection())
 
 inputWord_reg = (root.register(inputWord), "%d", "%S")
 
@@ -197,43 +204,39 @@ input_ = tk.StringVar()
 input_.set("aaaaa")
 
 # ------------------------LABELS--------------------
-name = "Нормальные алгоритмы Маркова"
+name = _("Normal markov algorithm")
 label_project_name = tk.Label(root, text=name, width=PROJECT_NAME_WIDTH)
 label_project_name.configure(fg="deep pink")
 label_project_name.grid(row=0, column=2, columnspan=4, pady=PADY_FIRST)
 
-label_input_word = tk.Label(root, text="Входное слово:", width=WORD_WIDTH)
+label_input_word = tk.Label(root, text=_("Input word:"), width=WORD_WIDTH)
 label_input_word.configure(fg="midnight blue")
 label_input_word.grid(row=1, column=0, columnspan=2, sticky=tk.N + tk.S)
 
-label_output_word = tk.Label(root, text="Выходное слово:", width=WORD_WIDTH)
+label_output_word = tk.Label(root, text=_("Output word:"), width=WORD_WIDTH)
 label_output_word.configure(fg="midnight blue")
 label_output_word.grid(row=1, column=6, columnspan=2, sticky=tk.N + tk.S)
 
-label_simbols = tk.Label(root, text="Обозначения стрелок:")
+label_simbols = tk.Label(root, text=_("Arows symbols:"))
 label_simbols.configure(fg="midnight blue")
 label_simbols.grid(row=1, column=2, columnspan=4, sticky=tk.S)
 
-info_str = " \u21A6 означает \"|->\"   \u2192  означает \"->\" "
+info_str = " \u21A6 means \"|->\"   \u2192  means \"->\" "
 label_arrow = tk.Label(root, text=info_str)
 label_arrow.configure(fg="midnight blue")
 label_arrow.grid(row=2, column=2, columnspan=4, sticky=tk.N)
 
-label_alphabet = tk.Label(root, text="Алфавит:", width=10)
+label_alphabet = tk.Label(root, text=_("Alphabet:"), width=10)
 label_alphabet.configure(fg="midnight blue")
 label_alphabet.grid(row=3, column=2, columnspan=1, pady=PADY_FIRST, sticky=tk.E)
 
-label_rule = tk.Label(root, text="Правила:", width=WORD_WIDTH)
+label_rule = tk.Label(root, text=_("Rules:"), width=WORD_WIDTH)
 label_rule.configure(fg="midnight blue")
 label_rule.grid(row=4, column=0, columnspan=2, sticky=tk.S + tk.W)
 
-label_exec = tk.Label(root, text="Ход выполнения:", width=WORD_WIDTH)
+label_exec = tk.Label(root, text=_("Steps:"), width=WORD_WIDTH)
 label_exec.configure(fg="midnight blue")
 label_exec.grid(row=4, column=4, columnspan=2, sticky=tk.S + tk.W, padx=20)
-
-label_logs = tk.Label(root, text="Диагностика алгоритма:")
-label_logs.configure(fg="midnight blue")
-label_logs.grid(row=7, column=0, columnspan=8, sticky=tk.W + tk.E + tk.S, pady=PADY)
 
 # ------------------------TEXT-----------------
 textbox_input_word = tk.Entry(root, width=INPUT_WIDTH, textvariable=input_)
@@ -256,30 +259,36 @@ algorithm_rules = file.read()
 text_algorithm.insert(0.0, algorithm_rules)
 
 text_logs = tk.Text(width=LOG_WIDTH, height=LOG_HEIGHT)
-text_logs.grid(row=8, column=0, columnspan=8, padx=PADX, pady=PADY)
+text_logs.grid(row=7, column=0, columnspan=8, padx=PADX, pady=PADY)
 text_logs.config(state=tk.DISABLED)
 
 # ------------------------LISTBOX------------------
 listbox = tk.Listbox(root, width=TEXT_WIDTH-2, height=TEXT_HEIGHT-1)
 listbox.grid(row=5, column=4, columnspan=4, sticky=tk.E, padx=PADX)
 
+listbox_lng = tk.Listbox(root)
+listbox_lng.grid(row=3, column=6, columnspan=2)
+listbox_lng.insert(tk.END, "English")
+listbox_lng.insert(tk.END, "Russian")
+listbox_lng.bind("<<LisboxSelect>>", select)
+
 # ----------------------BUTTONS-----------------------
-button_start = tk.Button(root, text="Start", width=15)
+button_start = tk.Button(root, text=_("Start"), width=15)
 button_start.configure(bg="green", fg="yellow")
 button_start.grid(row=6, column=0, columnspan=2, padx=PADX, pady=PADY)
 button_start.bind("<Button-1>", startMarkov)
 
-button_stop = tk.Button(root, text="Stop", width=15)
+button_stop = tk.Button(root, text=_("Stop"), width=15)
 button_stop.configure(bg="red", fg="white")
 button_stop.grid(row=6, column=2, columnspan=2, padx=PADX, pady=PADY)
 button_stop.bind("<Button-1>", stopMarkov)
 
-button_step = tk.Button(root, text="Step", width=15)
+button_step = tk.Button(root, text=_("Step"), width=15)
 button_step.configure(bg="MediumPurple2", fg="antique white")
 button_step.grid(row=6, column=4, columnspan=2, padx=PADX, pady=PADY)
 button_step.bind("<Button-1>", stepMarkov)
 
-button_exit = tk.Button(root, text="Exit", width=15, command=root.quit)
+button_exit = tk.Button(root, text=_("Exit"), width=15, command=root.quit)
 button_exit.configure(bg="antique white", fg="red")
 button_exit.grid(row=6, column=6, columnspan=2, padx=PADX, pady=PADY)
 
