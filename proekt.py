@@ -1,15 +1,19 @@
 #!/usr/bin/env python7
 
 import tkinter as tk
-import re
 from modules import ParsingModule as PM
 from modules import IterationModule as IM
-
 import os
-import gettext     
-root= os.getcwd()
-t = gettext.translation('translate', root, languages=['ru'])
-_= t.gettext
+import gettext
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('language', nargs='?', default='en')
+param = parser.parse_args()
+
+root = os.getcwd()
+t = gettext.translation('translate', root, languages=[str(param.language)])
+_ = t.gettext
 t.install()
 
 
@@ -38,8 +42,8 @@ Errors = {
     "cycle": _("Algorithm was cycled, check errors in your algorithm\n"),
     "arrow_not_found": _("Missing arrow in rule:\n"),
     "str_number_err": _("Error in rule number - %i \n"),
-    "not_in_alphabet": _("Sumbol \"{0}\" not from alphabet. Error in index - {1}\n"),
-    "uncorrect_input": _("You try to put symbol \"%s\", which is not included in the alphabet\n")}
+    "not_alph": _("Sumbol \"{0}\" not from alphabet. Error in index - {1}\n"),
+    "bad_input": _("You try to put symbol \"%s\", which is not included in the alphabet\n")}
 
 
 def write_logs(string):
@@ -47,6 +51,7 @@ def write_logs(string):
     text_logs.delete(1.0, tk.END)
     text_logs.insert(1.0, string)
     text_logs.config(state=tk.DISABLED)
+
 
 # str rule
 # int raw
@@ -62,7 +67,7 @@ def checkRules(rule, raw):
         return rule_lst
     i = rule_val[0]
     k = rule_val[1]
-    help_str = Errors["not_in_alphabet"].format(k, i)
+    help_str = Errors["not_alph"].format(k, i)
     write_logs(Errors["str_number_err"] % raw + help_str)
     text_algorithm.tag_add("Error", str(raw) + "." + str(i))
     text_algorithm.tag_config("Error", foreground="red")
@@ -83,6 +88,7 @@ def parseRules(rules):
             lst.append(parsed_rule)
         i += 1
     return lst
+
 
 def uploadRawRules(rules):
     listbox.delete(0, tk.END)
@@ -128,6 +134,7 @@ def initSteps():
         write_logs(Errors["empty"])
         return False
     global save_rules
+    uploadRawRules(text_algorithm.get(1.0, tk.END).split("\n"))
     save_rules = parseRules(text_algorithm.get(1.0, tk.END).split("\n"))
     if not save_rules:
         return False
@@ -189,13 +196,9 @@ def inputWord(act, inp):
         text_logs.delete(1.0, tk.END)
         text_logs.config(state=tk.DISABLED)
         return True
-    write_logs(Errors["uncorrect_input"] % inp)
+    write_logs(Errors["bad_input"] % inp)
     return False
 
-
-def select(event):
-    print(222)
-    print(listbox_lng.curselection())
 
 inputWord_reg = (root.register(inputWord), "%d", "%S")
 
@@ -274,12 +277,6 @@ text_logs.config(state=tk.DISABLED)
 # ------------------------LISTBOX------------------
 listbox = tk.Listbox(root, width=TEXT_WIDTH-2, height=TEXT_HEIGHT-1)
 listbox.grid(row=5, column=4, columnspan=4, sticky=tk.E, padx=PADX)
-
-listbox_lng = tk.Listbox(root, height=2)
-listbox_lng.grid(row=3, column=6, columnspan=2)
-listbox_lng.insert(tk.END, "English")
-listbox_lng.insert(tk.END, "Russian")
-listbox_lng.bind("<<ListboxSelect>>", select)
 
 # ----------------------BUTTONS-----------------------
 button_start = tk.Button(root, text=_("Start"), width=15)

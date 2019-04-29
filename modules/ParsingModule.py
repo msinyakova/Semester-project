@@ -1,6 +1,7 @@
 import re
 
-CONST_ALPHABET = ['a','b','c','*']
+CONST_ALPHABET = ['a', 'b', 'c', '*']
+
 
 # str rule
 # return lst
@@ -21,7 +22,7 @@ def validateRuleList(rule):
     i = 0
     for k in rule[0]:
         if k not in CONST_ALPHABET:
-            return [i,k]
+            return [i, k]
         i += 1
     if rule[2]:
         i += 3
@@ -29,6 +30,6 @@ def validateRuleList(rule):
         i += 2
     for k in rule[1]:
         if k not in CONST_ALPHABET:
-            return [i,k]
+            return [i, k]
         i += 1
     return []

@@ -1,6 +1,8 @@
 # lst rules
 # str sinput
 # return lst
+
+
 def doIteration(rules, sinput):
     flag = True
     i = 0
