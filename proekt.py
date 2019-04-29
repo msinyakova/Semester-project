@@ -37,13 +37,14 @@ def write_logs(string):
     text_logs.insert(1.0, string)
     text_logs.config(state=tk.DISABLED)
 
+
 def checkRules(rule, raw):
     flag = True
     res = re.match('(.*)\\|->'+'(.*)$', rule, re.MULTILINE)
     if (isinstance(res, type(None))):
         flag = False
         res = re.match('(.*)->'+'(.*)$', rule, re.MULTILINE)
-    if (isinstance(res,type(None))):
+    if (isinstance(res, type(None))):
         help_str = Errors["arrow_not_found"] + rule + "\n"
         write_logs(Errors["str_number_err"] % raw + help_str)
         return False
@@ -53,7 +54,7 @@ def checkRules(rule, raw):
             help_str = Errors["not_in_alphabet"] % (k, i)
             write_logs(Errors["str_number_err"] % raw + help_str)
             text_algorithm.tag_add("Error", str(raw) + "." + str(i))
-            text_algorithm.tag_config("Error",foreground = "red")
+            text_algorithm.tag_config("Error", foreground="red")
             return False
         i += 1
     if (flag):
@@ -65,10 +66,11 @@ def checkRules(rule, raw):
             help_str = Errors["not_in_alphabet"] % (k, i)
             write_logs(Errors["str_number_err"] % raw + help_str)
             text_algorithm.tag_add("Error", str(raw) + "." + str(i))
-            text_algorithm.tag_config("Error",foreground = "red")
+            text_algorithm.tag_config("Error", foreground="red")
             return False
         i += 1
     return [res.group(1), res.group(2), flag]
+
 
 def parseRules(rules):
     i = 1
@@ -84,6 +86,7 @@ def parseRules(rules):
             lst.append(parsed_rule)
         i += 1
     return lst
+
 
 # return lst
 def doIteration(rules, sinput):
@@ -102,6 +105,7 @@ def doIteration(rules, sinput):
     i += 1
     return [sinput, flag, i]
 
+
 def uploadRawRules(rules):
     listbox.delete(0, tk.END)
     i = 1
@@ -111,6 +115,7 @@ def uploadRawRules(rules):
             continue
         listbox.insert(tk.END, ("(%i) " % i) + rule)
         i += 1
+
 
 def startMarkov(event):
     if save_rules:
