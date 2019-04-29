@@ -25,7 +25,7 @@ save_rules = False
 Errors = {
     "empty": "Пустое входное слово, введите слово в поле \"Входное слово\"\n",
     "done": "Алгоритм завершился успешно\n",
-    "cycle": "Алгорит зациклился, проверьте корректность своего алгорта\n",
+    "cycle": "Алгорит зациклился, проверьте корректность своего алгоритма\n",
     "arrow_not_found": "Не найдена стрелка в правиле:\n",
     "str_number_err": "Ошибка в записи правила номер - %i \n",
     "not_in_alphabet": "Символ \"%s\" не из алфавита. Ошибка в позиции - %i\n"}
@@ -37,36 +37,38 @@ def write_logs(string):
     text_logs.insert(1.0, string)
     text_logs.config(state=tk.DISABLED)
 
-
 def checkRules(rule, raw):
     flag = True
     res = re.match('(.*)\\|->'+'(.*)$', rule, re.MULTILINE)
-    if (type(res) == type(None)):
+    if (isinstance(res, type(None))):
         flag = False
         res = re.match('(.*)->'+'(.*)$', rule, re.MULTILINE)
-    if (type(res) == type(None)):
+    if (isinstance(res,type(None))):
         help_str = Errors["arrow_not_found"] + rule + "\n"
         write_logs(Errors["str_number_err"] % raw + help_str)
         return False
     i = 0
     for k in res.group(1):
         if (k not in CONST_ALPHABET):
-            help_str = Errors["not_in_alphabet"] % (k, i + 1)
+            help_str = Errors["not_in_alphabet"] % (k, i)
             write_logs(Errors["str_number_err"] % raw + help_str)
+            text_algorithm.tag_add("Error", str(raw) + "." + str(i))
+            text_algorithm.tag_config("Error",foreground = "red")
             return False
         i += 1
     if (flag):
-        i += 2
-    else:
         i += 3
+    else:
+        i += 2
     for k in res.group(2):
         if (k not in CONST_ALPHABET):
-            help_str = Errors["not_in_alphabet"] % (k, i + 1)
+            help_str = Errors["not_in_alphabet"] % (k, i)
             write_logs(Errors["str_number_err"] % raw + help_str)
+            text_algorithm.tag_add("Error", str(raw) + "." + str(i))
+            text_algorithm.tag_config("Error",foreground = "red")
             return False
         i += 1
     return [res.group(1), res.group(2), flag]
-
 
 def parseRules(rules):
     i = 1
@@ -83,7 +85,6 @@ def parseRules(rules):
         i += 1
     return lst
 
-
 # return lst
 def doIteration(rules, sinput):
     flag = True
@@ -95,11 +96,21 @@ def doIteration(rules, sinput):
         if (not flag):
             sinput = stmp
             if (rule[2]):
+                flag = True
                 break
             break
     i += 1
     return [sinput, flag, i]
 
+def uploadRawRules(rules):
+    listbox.delete(0, tk.END)
+    i = 1
+    for rule in rules:
+        rule = rule.rstrip()
+        if rule == '':
+            continue
+        listbox.insert(tk.END, ("(%i) " % i) + rule)
+        i += 1
 
 def startMarkov(event):
     if save_rules:
@@ -107,6 +118,7 @@ def startMarkov(event):
     if (input_.get() == ''):
         write_logs(Errors["empty"])
         return
+    uploadRawRules(text_algorithm.get(1.0, tk.END).split("\n"))
     rules = parseRules(text_algorithm.get(1.0, tk.END).split("\n"))
     if not rules:
         return
