@@ -28,7 +28,8 @@ Errors = {
     "cycle": "Алгорит зациклился, проверьте корректность своего алгоритма\n",
     "arrow_not_found": "Не найдена стрелка в правиле:\n",
     "str_number_err": "Ошибка в записи правила номер - %i \n",
-    "not_in_alphabet": "Символ \"%s\" не из алфавита. Ошибка в позиции - %i\n"}
+    "not_in_alphabet": "Символ \"%s\" не из алфавита. Ошибка в позиции - %i\n",
+    "uncorrect_input": "Вы пытаетесь ввести символ \"%s\", который не входит в алфавит\n"}
 
 
 def write_logs(string):
@@ -207,7 +208,11 @@ def inputWord(act, inp):
     if (act == '0'):
         return True
     if (inp in CONST_ALPHABET):
+        text_logs.config(state=tk.NORMAL)
+        text_logs.delete(1.0, tk.END)
+        text_logs.config(state=tk.DISABLED)
         return True
+    write_logs(Errors["uncorrect_input"] % inp)
     return False
 
 
@@ -257,6 +262,10 @@ label_exec = tk.Label(root, text="Ход выполнения:", width=WORD_WIDT
 label_exec.configure(fg="midnight blue")
 label_exec.grid(row=4, column=4, columnspan=2, sticky=tk.S + tk.W, padx=20)
 
+label_logs = tk.Label(root, text="Диагностика алгоритма:")
+label_logs.configure(fg="midnight blue")
+label_logs.grid(row=7, column=0, columnspan=8, sticky=tk.W + tk.E + tk.S, pady=PADY)
+
 # ------------------------TEXT-----------------
 textbox_input_word = tk.Entry(root, width=INPUT_WIDTH, textvariable=input_)
 textbox_input_word.grid(row=2, column=0, columnspan=2, padx=PADX, sticky=tk.S)
@@ -278,7 +287,7 @@ algorithm_rules = file.read()
 text_algorithm.insert(0.0, algorithm_rules)
 
 text_logs = tk.Text(width=LOG_WIDTH, height=LOG_HEIGHT)
-text_logs.grid(row=7, column=0, columnspan=8, padx=PADX, pady=PADY)
+text_logs.grid(row=8, column=0, columnspan=8, padx=PADX, pady=PADY)
 text_logs.config(state=tk.DISABLED)
 
 # ------------------------LISTBOX------------------

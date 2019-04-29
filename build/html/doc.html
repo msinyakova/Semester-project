@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>Инструкция по эксплуатации &#8212; документация Нормальные Алгоритмы Маркова 1</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
+    <link rel="prev" title="Документация по Нормальным Алгоритмам Маркова" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="id1">
+<h1>Инструкция по эксплуатации<a class="headerlink" href="#id1" title="Ссылка на этот заголовок">¶</a></h1>
+<p>Для полноценной работы данного алгоритма необходимо ввести входные данные для программы: входное слова и правила для его модификации.
+Одним из ограничей программы является алфавит. Входный и выходной алфавит фиксированны, равны и состоят из символов  <code class="docutils literal notranslate"><span class="pre">a,</span> <span class="pre">b,</span> <span class="pre">c,</span> <span class="pre">*</span></code></p>
+<p>Инерфейс имеет вид:</p>
+<img alt="_images/NAM.jpg" src="_images/NAM.jpg" />
+<p>В приведенном примере все поля заполнены корректными данными и показано состояние после корректной работы алгоритма</p>
+<div class="section" id="id2">
+<h2>Ввод входного слова<a class="headerlink" href="#id2" title="Ссылка на этот заголовок">¶</a></h2>
+<p>Входное слово вводится на английском языке без пробелов. Для ввода допустимы только символы входящие в алфавит.
+При нажатии символа, не входящего в алфавит, отображение данного символа не происходит. В поле для вывода информации о работе программы отображается произошедшая ошибка и символ, который был некорректно введен.</p>
+<p>При вводе пустого слова в диагностическом окне выводится информации об ошибке и предложение для ввода слова и повторного запуска алгоритма.</p>
+</div>
+<div class="section" id="id3">
+<h2>Ввод правил алгоритма<a class="headerlink" href="#id3" title="Ссылка на этот заголовок">¶</a></h2>
+<p>При вводе функциональных подстановок необходимо придерживаться определенного формата ввода:</p>
+<div class="admonition note">
+<p class="admonition-title">Примечание</p>
+<p>Простая подстановка: L → D</p>
+<p>Терминальная подстановка: L ↦ D</p>
+</div>
+<p>Где для ввода символа → используется комбинация <code class="docutils literal notranslate"><span class="pre">-&gt;</span></code>, а для ввода символа ↦ используется комбинация <code class="docutils literal notranslate"><span class="pre">|-&gt;</span></code>.
+Обратим внимание, что пробелы, табуляция и другие разделители считаются символами. Пустая строка (или заполенная пробелами) между правилами или после них игнорируется.</p>
+</div>
+<div class="section" id="id4">
+<h2>Информация об ошибках<a class="headerlink" href="#id4" title="Ссылка на этот заголовок">¶</a></h2>
+<ul class="simple">
+<li><p><em>Ошибка ввода правила:</em> при вводе в текстовом поле функциональных подстановок, правила не в одном из предложенных выше форматов, будет выведено сообщение об ошибке в поле диагностики о некорректном построении правила. В поле отображения правил будет выведен посимвольно введеный текст с пронумерованными првилами. Чтобы исправить эту ошибку необходимо вставить в правило одну из стрелочек (→ или ↦).</p></li>
+<li><p><em>Ошибка ввода символа:</em> при вводе некорректного символа в текстовое поле для функциональных подстановок, будет выведена ошибка в поле диагностики. Ошибка содержит в себе в каком правиле произшла ошибка, в какой позиции (если считать посимвольно) и какой символ не верен. Ошибочный символ будет напечатан красным цветом в поле для ввода правил. При отображении в список правил, правила нумеруются и печатаюся посимвольно, как при вводе. Для исправления данной ошибки необходимо убрать екорректный символ и повторить запуск программы. При допущении сразу несольких ошибок, будет выделена первая из них.</p></li>
+<li><p><em>Зацикливание алгоритма:</em> при вводе правила или комбинации правил, привозящих к зацикливанию алгоритма, выводит информация об ошибке в диагностическое окно. Под зацикливанием понимаем превышение допустимого числа итераций. По дефолту эту значение равно 1000.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id5">
+<h1>Запуск программы<a class="headerlink" href="#id5" title="Ссылка на этот заголовок">¶</a></h1>
+<p>Для корректного запуска программы необходимо корректно заполнить поля <code class="docutils literal notranslate"><span class="pre">Входное</span> <span class="pre">слово</span></code> и <code class="docutils literal notranslate"><span class="pre">Правила</span></code>. После этого нажать кнопку <strong>Start</strong>. Если все заполнено корректно, то в поле <code class="docutils literal notranslate"><span class="pre">Выходное</span> <span class="pre">слово</span></code> будет выведен результат работы алгоритма. В поле для диагностики будет выведено сообщение об успешном завершении работы. В правом окне будут пронумерованы и отображены функциональные подстановки, в которых стрелочки заменены на символы юникода для более понятного отображения.</p>
+<p>При некореектном вводе будет получена одна из ошибок, описанных выше.</p>
+<p>Для завершения работы программы необходимо нажать кнопку <strong>Exit</strong>.</p>
+</div>
+<div class="section" id="id6">
+<h1>Пошаговая работа программы<a class="headerlink" href="#id6" title="Ссылка на этот заголовок">¶</a></h1>
+<p>Если необходимо пошагово выполнить программу, то после корректного ввода нажимаем кнопку <strong>Step</strong>. В правом окне будут отображены правила, подсвечено фиолетовым цветом правило, которое сейчас выполняется и в поле <code class="docutils literal notranslate"><span class="pre">Выходное</span> <span class="pre">слово</span></code> будет отображено результирующее значение полсе применения первого шага. Для выполнения следующего шага необходимо повторно нажать кнопку <strong>Step</strong>. Для выхода из пошагового режима необходимо нажать кнопку <strong>Stop</strong>.</p>
+<p>При некореектном вводе будет получена одна из ошибок, описанных выше.</p>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Нормальные Алгоритмы Маркова</a></h1>
+
+
+
+
+
+
+
+
+<h3>Навигация</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Инструкция по эксплуатации</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">Ввод входного слова</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">Ввод правил алгоритма</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">Информация об ошибках</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#id5">Запуск программы</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#id6">Пошаговая работа программы</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="предыдущая глава">Документация по Нормальным Алгоритмам Маркова</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Быстрый поиск</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Искать" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Синкова Марина 421 группа, Чернявский Максим 409 группа.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/doc.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
