@@ -1,0 +1,97 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-30 01:04+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en_EN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: proekt.py:36
+msgid "Epmty input word, input word in area: \"Input word\"\n"
+msgstr "Epmty input word, input word in area: \"Input word\"\n"
+
+#: proekt.py:37
+msgid "Algorithm was done successfully\n"
+msgstr "Algorithm was done successfully\n"
+
+#: proekt.py:38
+msgid "Algorithm was cycled, check errors in your algorithm\n"
+msgstr "Algorithm was cycled, check errors in your algorithm\n"
+
+#: proekt.py:39
+msgid "Missing arrow in rule:\n"
+msgstr "Missing arrow in rule:\n" 
+
+#: proekt.py:40
+#, python-format
+msgid "Error in rule number - %i \n"
+msgstr "Error in rule number - %i \n"
+
+#: proekt.py:41
+#, python-brace-format
+msgid "Sumbol \"{0}\" not from alphabet. Error in index - {1}\n"
+msgstr "Sumbol \"{0}\" not from alphabet. Error in index - {1}\n"
+
+#: proekt.py:42
+#, python-brace-format
+msgid "You try to put symbol \"%s\", which is not included in the alphabet\n"
+msgstr "You try to put symbol \"%s\", which is not included in the alphabet\n"
+
+#: proekt.py:212
+msgid "Normal markov algorithm"
+msgstr "Normal markov algorithm"
+
+#: proekt.py:217
+msgid "Input word:"
+msgstr "Input word:"
+
+#: proekt.py:221
+msgid "Output word:"
+msgstr "Output word:"
+
+#: proekt.py:225
+msgid "Arows symbols:"
+msgstr "Arows symbols:"
+
+#: proekt.py:234
+msgid "Alphabet:"
+msgstr "Alphabet:"
+
+#: proekt.py:238
+msgid "Rules:"
+msgstr "Rules:"
+
+#: proekt.py:242
+msgid "Steps:"
+msgstr "Steps:"
+
+#: proekt.py:246
+msgid "Algorithm's diagnostic:"
+msgstr "Algorithm's diagnostic:"  
+
+#: proekt.py:285
+msgid "Start"
+msgstr "Start"
+
+#: proekt.py:290
+msgid "Stop"
+msgstr "Stop"
+
+#: proekt.py:295
+msgid "Step"
+msgstr "Step"
+
+#: proekt.py:300
+msgid "Exit"
+msgstr "Exit"

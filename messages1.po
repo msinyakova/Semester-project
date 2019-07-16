@@ -1,0 +1,97 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-04-30 01:04+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: proekt.py:36
+msgid "Epmty input word, input word in area: \"Input word\"\n"
+msgstr "Пустое входное слово, введите слово в поле: \"Входное слово\"\n"
+
+#: proekt.py:37
+msgid "Algorithm was done successfully\n"
+msgstr "Алгоритм завершился успешно\n"
+
+#: proekt.py:38
+msgid "Algorithm was cycled, check errors in your algorithm\n"
+msgstr "Алгоритм зациклился, проверьте корректность своего алгоритма\n"
+
+#: proekt.py:39
+msgid "Missing arrow in rule:\n"
+msgstr "Не найдена стрелка в правиле:\n"
+
+#: proekt.py:40
+#, python-format
+msgid "Error in rule number - %i \n"
+msgstr "Ошибка в записи правила номер - %i \n"
+
+#: proekt.py:41
+#, python-brace-format
+msgid "Sumbol \"{0}\" not from alphabet. Error in index - {1}\n"
+msgstr "Символ \"{0}\" не из алфавита. Ошибка в позиции - {1}\n"
+
+#: proekt.py:42
+#, python-brace-format
+msgid "You try to put symbol \"%s\", which is not included in the alphabet\n"
+msgstr "Вы пытаетесь ввести символ \"%s\", который не входит в алфавит\n"
+
+#: proekt.py:212
+msgid "Normal markov algorithm"
+msgstr "Нормальные алгоритмы Маркова"
+
+#: proekt.py:217
+msgid "Input word:"
+msgstr "Входное слово:"
+
+#: proekt.py:221
+msgid "Output word:"
+msgstr "Выходное слово:"
+
+#: proekt.py:225
+msgid "Arows symbols:"
+msgstr "Обозначения стрелок:"
+
+#: proekt.py:234
+msgid "Alphabet:"
+msgstr "Алфавит:"
+
+#: proekt.py:238
+msgid "Rules:"
+msgstr "Правила:"
+
+#: proekt.py:242
+msgid "Steps:"
+msgstr "Ход выполнения:"
+
+#: proekt.py:246
+msgid "Algorithm's diagnostic:"
+msgstr "Диагностика алгоритма:"  
+
+#: proekt.py:285
+msgid "Start"
+msgstr "Старт"
+
+#: proekt.py:290
+msgid "Stop"
+msgstr "Стоп"
+
+#: proekt.py:295
+msgid "Step"
+msgstr "Шаг"
+
+#: proekt.py:300
+msgid "Exit"
+msgstr "Выход"
